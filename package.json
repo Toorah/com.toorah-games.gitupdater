@@ -1,0 +1,12 @@
+{
+    "name": "com.toorah-games.gitupdater",
+    "version": "1.0.0",
+    "displayName": "Git Updater",
+    "description": "An EditorWindow that detects and allows to update Git based packages from the package manager\t",
+    "unity": "2020.1",
+    "author": {
+        "name": "Atahan Tugra Kiltan",
+        "email": "",
+        "url": ""
+    }
+}
