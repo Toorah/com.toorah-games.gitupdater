@@ -280,8 +280,6 @@ namespace Toorah.GitUpdater.Editor
             var id = pi.packageId.Split('@');
             if (id[0].Contains("com.unity."))
                 return;
-            if (id[0] == "com.toorah-games.gitupdater")
-                return;
 
             var package = new Package
             {
@@ -291,7 +289,8 @@ namespace Toorah.GitUpdater.Editor
                 author = pi.author != null ? pi.author.name : string.Empty,
                 version = pi.version
             };
-            m_packages.Add(package);
+            if(m_packages.Find(x => x.url == package.url) == null)
+                m_packages.Add(package);
 
             if (reinstallURLs.Count > 0)
             {
