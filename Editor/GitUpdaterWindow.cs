@@ -280,15 +280,20 @@ namespace Toorah.GitUpdater.Editor
             if (id[0].Contains("com.unity."))
                 return;
 
-            var packagejson = File.ReadAllText(Path.Combine(pi.assetPath, "package.json"));
-            var dependency = GetDependencies(packagejson);
-            if(dependency != null)
+            var path = Path.Combine(pi.assetPath, "package.json");
+            if (File.Exists(path))
             {
-                var dependencies = dependency.Trim().Split(',');
-                Debug.Log($"Found Dependencies for {id[0]}:");
-                foreach(var dep in dependencies)
+                var packagejson = File.ReadAllText(path);
+                var dependency = GetDependencies(packagejson);
+                if(dependency != null)
                 {
-                    Debug.Log(dep);
+                    var dependencies = dependency.Trim().Split(',');
+                    Debug.Log($"Found Dependencies for {id[0]}:");
+                    foreach(var dep in dependencies)
+                    {
+                        var deps = dep.Replace("\"", "").Split(':');
+                        Debug.Log($"--> {deps[0]} @ {deps[1]}");
+                    }
                 }
             }
 
