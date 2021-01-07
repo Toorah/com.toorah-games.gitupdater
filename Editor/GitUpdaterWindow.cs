@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -198,7 +199,7 @@ namespace Toorah.GitUpdater.Editor
                         default:
                         case StatusCode.Failure:
                             if (pmrr.Error != null)
-                                Debug.LogError($"[{pmrr.Error.errorCode}] {pmrr.Error.message}");
+                                Debug.LogError($"{{{pmrr.Error.errorCode}}} {pmrr.Error.message}");
                             break;
                     }
                 }
@@ -218,7 +219,14 @@ namespace Toorah.GitUpdater.Editor
                         default:
                         case StatusCode.Failure:
                             if (pmar.Error != null)
-                                Debug.LogError($"[{pmar.Error.errorCode}] {pmar.Error.message}");
+                            {
+                                Debug.LogError($"{{{pmar.Error.errorCode}}} {pmar.Error.message}");
+                                if(reinstallURLs.Count > 0)
+                                {
+                                    var packUrl = ExtractPackageURLFromError(pmar.Error.message);
+                                    reinstallURLs.Remove(packUrl);
+                                }
+                            }
                             break;
                     }
                 }
@@ -243,7 +251,7 @@ namespace Toorah.GitUpdater.Editor
                         default:
                         case StatusCode.Failure:
                             if (pmlr.Error != null)
-                                Debug.LogError($"[{pmlr.Error.errorCode}] {pmlr.Error.message}");
+                                Debug.LogError($"{{{pmlr.Error.errorCode}}} {pmlr.Error.message}");
                             break;
                     }
 
@@ -271,6 +279,8 @@ namespace Toorah.GitUpdater.Editor
             if (id[0].Contains("com.unity."))
                 return;
 
+            Debug.Log(pi.assetPath);
+
             var package = new Package
             {
                 package = id[0],
@@ -289,5 +299,20 @@ namespace Toorah.GitUpdater.Editor
             }
         }
         #endregion
+
+
+        string GetDependencies(string t)
+        {
+            Regex reg = new Regex("\"gitdependencies\":[\\s\\S]*?{([\\s\\S]*?)}");
+            var match = reg.Match(t);
+            return match.Captures[match.Captures.Count - 1].Value;
+        }
+
+        string ExtractPackageURLFromError(string error)
+        {
+            Regex reg = new Regex(@"\[(.*)\]");
+            var match = reg.Match(error);
+            return match.Captures[match.Captures.Count - 1].Value;
+        }
     }
 }
