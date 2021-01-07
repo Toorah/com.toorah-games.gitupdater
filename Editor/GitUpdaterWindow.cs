@@ -293,6 +293,7 @@ namespace Toorah.GitUpdater.Editor
                     {
                         var deps = dep.Replace("\":", ";").Replace("\"", "").Split(';');
                         Debug.Log($"--> {deps[0]} @ {deps[1]}");
+                        AddPendingPackage(deps[1]);
                     }
                 }
             }
