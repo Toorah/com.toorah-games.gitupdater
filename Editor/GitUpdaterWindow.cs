@@ -316,19 +316,19 @@ namespace Toorah.GitUpdater.Editor
         {
             Regex reg = new Regex("\"gitdependencies\":[\\s\\S]*?{([\\s\\S]*?)}");
             var match = reg.Match(t);
-            if (match.Captures == null || match.Captures.Count == 0)
+            if (match.Groups == null || match.Groups.Count == 0)
                 return null;
 
-            return match.Captures[match.Captures.Count - 1].Value;
+            return match.Groups[match.Groups.Count - 1].Value;
         }
 
         string ExtractPackageURLFromError(string error)
         {
             Regex reg = new Regex(@"\[(.*)\]");
             var match = reg.Match(error);
-            if (match.Captures == null || match.Captures.Count == 0)
+            if (match.Groups == null || match.Groups.Count == 0)
                 return null;
-            return match.Captures[match.Captures.Count - 1].Value;
+            return match.Groups[match.Groups.Count - 1].Value;
         }
     }
 }
