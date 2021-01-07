@@ -280,7 +280,17 @@ namespace Toorah.GitUpdater.Editor
             if (id[0].Contains("com.unity."))
                 return;
 
-            Debug.Log(File.Exists(Path.Combine(pi.assetPath, "package.json")));
+            var packagejson = File.ReadAllText(Path.Combine(pi.assetPath, "package.json"));
+            var dependency = GetDependencies(packagejson);
+            if(dependency != null)
+            {
+                var dependencies = dependency.Trim().Split(',');
+                Debug.Log($"Found Dependencies for {id[0]}:");
+                foreach(var dep in dependencies)
+                {
+                    Debug.Log(dep);
+                }
+            }
 
             var package = new Package
             {
@@ -306,6 +316,9 @@ namespace Toorah.GitUpdater.Editor
         {
             Regex reg = new Regex("\"gitdependencies\":[\\s\\S]*?{([\\s\\S]*?)}");
             var match = reg.Match(t);
+            if (match.Captures == null || match.Captures.Count == 0)
+                return null;
+
             return match.Captures[match.Captures.Count - 1].Value;
         }
 
@@ -313,6 +326,8 @@ namespace Toorah.GitUpdater.Editor
         {
             Regex reg = new Regex(@"\[(.*)\]");
             var match = reg.Match(error);
+            if (match.Captures == null || match.Captures.Count == 0)
+                return null;
             return match.Captures[match.Captures.Count - 1].Value;
         }
     }
