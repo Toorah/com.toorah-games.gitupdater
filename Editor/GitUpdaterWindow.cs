@@ -21,6 +21,8 @@ namespace Toorah.GitUpdater.Editor
             public string version;
         }
 
+        const string c_gitUrl = "https://github.com/Toorah/com.toorah-games.gitupdater.git";
+
         #region Fields
         [SerializeField]
         private List<Package> m_packages = new List<Package>();
@@ -70,6 +72,14 @@ namespace Toorah.GitUpdater.Editor
                 {
                     AddPendingPackage(m_url);
                     m_url = string.Empty;
+                }
+            }
+
+            if(GUILayout.Button("Copy Git URL"))
+            {
+                if(EditorUtility.DisplayDialog("Copy Git URL", "Press OK to copy the Git URL to the clipbaord. You can use it, to update the \"Git Package Updater\" Package manually in the PackageManager.", "OK", "Cancel"))
+                {
+                    GUIUtility.systemCopyBuffer = c_gitUrl;
                 }
             }
 
