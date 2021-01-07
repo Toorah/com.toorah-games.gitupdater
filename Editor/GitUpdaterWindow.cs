@@ -292,8 +292,8 @@ namespace Toorah.GitUpdater.Editor
                     foreach(var dep in dependencies)
                     {
                         var deps = dep.Replace("\":", ";").Replace("\"", "").Split(';');
-                        Debug.Log($"--> {deps[0]} @ {deps[1]}");
-                        AddPendingPackage(deps[1]);
+                        Debug.Log($"--> {deps[0]} @ {deps[1].Trim()}");
+                        AddPendingPackage(deps[1].Trim());
                     }
                 }
             }
