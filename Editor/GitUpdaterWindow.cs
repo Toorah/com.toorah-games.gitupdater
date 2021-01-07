@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -279,7 +280,7 @@ namespace Toorah.GitUpdater.Editor
             if (id[0].Contains("com.unity."))
                 return;
 
-            Debug.Log(pi.assetPath);
+            Debug.Log(File.Exists(Path.Combine(pi.assetPath, "package.json")));
 
             var package = new Package
             {
