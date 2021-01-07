@@ -168,8 +168,13 @@ namespace Toorah.GitUpdater.Editor
 
         void ReinstallPackage(Package p)
         {
-            reinstallURLs.Add(p.url);
-            RemovePackage(p);
+            var url = p.url;
+            reinstallURLs.Add(url);
+            m_packages.Remove(p);
+            AddPackageFromURL(url);
+
+            //reinstallURLs.Add(p.url);
+            //RemovePackage(p);
         }
 
 
