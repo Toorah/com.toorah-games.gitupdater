@@ -285,7 +285,7 @@ namespace Toorah.GitUpdater.Editor
             {
                 var packagejson = File.ReadAllText(path);
                 var dependency = GetDependencies(packagejson);
-                if(dependency != null)
+                if(!string.IsNullOrEmpty(dependency))
                 {
                     var dependencies = dependency.Trim().Split(',');
                     Debug.Log($"Found Dependencies for {id[0]}:");
@@ -322,7 +322,7 @@ namespace Toorah.GitUpdater.Editor
             Regex reg = new Regex("\"gitdependencies\":[\\s\\S]*?{([\\s\\S]*?)}");
             var match = reg.Match(t);
             if (match.Groups == null || match.Groups.Count == 0)
-                return null;
+                return string.Empty;
 
             return match.Groups[match.Groups.Count - 1].Value;
         }
